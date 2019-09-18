@@ -61,12 +61,12 @@ var MOCK = {
   },
   location: {
     x: {
-      min: pinImg.offsetWidth / 2,
-      max: map.clientWidth - pinImg.offsetWidth / 2
+      min: 0,
+      max: 1200
     },
     y: {
-      min: 130 - pinImg.offsetHeight,
-      max: 630 - pinImg.offsetHeight
+      min: 130,
+      max: 630
     }
   }
 };
@@ -138,8 +138,8 @@ var createObject = function () {
         photos: shuffleArray(MOCK.offer.photos)
       },
       location: {
-        x: getRandom(MOCK.location.x.min, MOCK.location.x.max),
-        y: getRandom(MOCK.location.y.min, MOCK.location.y.max)
+        x: getRandom(MOCK.location.x.min + pinImg.offsetWidth / 2, MOCK.location.x.max - pinImg.offsetWidth / 2),
+        y: getRandom(MOCK.location.y.min - pinImg.offsetHeight, MOCK.location.y.max - pinImg.offsetHeight)
       }
     };
     arr.push(object);
