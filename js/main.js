@@ -206,13 +206,13 @@ var createCardElem = function (cardElements) {
   var arrPhotos = cardElements.offer.photos;
   cardElem.querySelector('.popup__photos').innerHTML = '';
   for (var k = 0; k < arrPhotos.length; k++) {
-    var ImgElement = document.createElement('img');
-    ImgElement.className = 'popup__photo';
-    ImgElement.alt = 'Фотография жилья';
-    ImgElement.width = '45';
-    ImgElement.height = '40';
-    ImgElement.src = arrPhotos[k];
-    cardElem.querySelector('.popup__photos').appendChild(ImgElement);
+    var imgElement = document.createElement('img');
+    imgElement.className = 'popup__photo';
+    imgElement.alt = 'Фотография жилья';
+    imgElement.width = '45';
+    imgElement.height = '40';
+    imgElement.src = arrPhotos[k];
+    cardElem.querySelector('.popup__photos').appendChild(imgElement);
   }
   cardElem.querySelector('.popup__avatar').src = cardElements.author.avatar;
   cardElem.classList.add('map__card');
