@@ -280,14 +280,13 @@ var capacityOption = capacityInput.querySelectorAll('option');
 
 titleInput.required = true;
 
-var startTypeState = function () {
+var startFormState = function () {
+  titleInput.required = true;
+  priceInput.required = true;
+  timeInOption[0].selected = true;
+  timeOutOption[0].selected = true;
   typeOption[0].selected = true;
   priceInput.placeholder = '0';
-};
-
-startTypeState();
-
-var startRoomsState = function () {
   roomsOption[0].selected = true;
   capacityOption[2].selected = true;
   capacityOption[0].disabled = true;
@@ -295,7 +294,7 @@ var startRoomsState = function () {
   capacityOption[3].disabled = true;
 };
 
-startRoomsState();
+startFormState();
 
 var checkTitle = function () {
   if (!titleRegEx.test(titleInput.value) || titleInput.value === '') {
