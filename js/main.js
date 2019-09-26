@@ -185,8 +185,11 @@ var createPin = function (fragment, arr) {
 };
 
 var renderPin = function () {
-  createPin(fragmentPin, newMockArray);
-  mapPins.appendChild(fragmentPin);
+  var pinBtn = document.querySelector('button[type="button"]');
+  if (!pinBtn) {
+    createPin(fragmentPin, newMockArray);
+    mapPins.appendChild(fragmentPin);
+  }
 };
 
 var delPin = function () {
