@@ -263,18 +263,12 @@ mainPin.addEventListener('mousedown', function () {
 });
 
 var form = document.querySelector('.ad-form');
-var formInputs = form.querySelectorAll('input');
-var titleInput = form.querySelector('input[name="title"]');
 var typeInput = form.querySelector('select[name="type"]');
 var priceInput = form.querySelector('input[name="price"]');
 var timeInInput = form.querySelector('select[name="timein"]');
 var timeOutInput = form.querySelector('select[name="timeout"]');
 var roomsInput = form.querySelector('select[name="rooms"]');
 var capacityInput = form.querySelector('select[name="capacity"]');
-var typeOption = typeInput.querySelectorAll('option');
-var timeInOption = timeInInput.querySelectorAll('option');
-var timeOutOption = timeOutInput.querySelectorAll('option');
-var roomsOption = roomsInput.querySelectorAll('option');
 var capacityOption = capacityInput.querySelectorAll('option');
 
 var checkPrice = function () {
@@ -287,26 +281,23 @@ var checkPrice = function () {
   }
 };
 
-var checkTypeOptions = function () {
-  typeOption.forEach(function (option) {
-    if (option.value === 'bungalo' && option.selected) {
-      priceInput.placeholder = '0';
-    } else if (option.value === 'flat' && option.selected) {
-      priceInput.placeholder = '1000';
-    } else if (option.value === 'house' && option.selected) {
-      priceInput.placeholder = '5000';
-    } else if (option.value === 'palace' && option.selected) {
-      priceInput.placeholder = '10000';
-    }
-  });
+var typeRooms = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
 };
 
-var checkTimeOptions = function (option1, option2) {
-  option1.forEach(function (option, i) {
-    if (option.selected) {
-      option2[i].selected = true;
-    }
-  });
+var checkTypeInput = function () {
+  priceInput.placeholder = typeRooms[typeInput.value];
+};
+
+var checkTimeInput = function (evt) {
+  if (evt.target === timeInInput) {
+    timeOutInput.value = timeInInput.value;
+  } else if (evt.target === timeOutInput) {
+    timeInInput.value = timeOutInput.value;
+  }
 };
 
 var roomsValues = {
@@ -320,44 +311,26 @@ var checkRoomsOptions = function () {
   capacityOption.forEach(function (option) {
     option.disabled = true;
   });
-  roomsOption.forEach(function (option) {
-    if (option.selected) {
-      for (var i = 0; i < roomsValues[option.value].length; i++) {
-        capacityInput.querySelector('option' + '[value="' + roomsValues[option.value][i] + '"]').disabled = false;
-        capacityInput.value = roomsValues[option.value][i];
+  roomsValues[roomsInput.value].forEach(function (option) {
+    capacityOption.forEach(function (op) {
+      if (Number(op.value) === option) {
+        op.disabled = false;
+        capacityInput.value = op.value;
       }
-    }
+    });
   });
 };
 
-titleInput.addEventListener('blur', function () {
-  titleInput.style.border = null;
-});
-
-typeInput.addEventListener('input', checkTypeOptions);
+typeInput.addEventListener('change', checkTypeInput);
 
 priceInput.addEventListener('input', checkPrice);
 
-priceInput.addEventListener('blur', function () {
-  priceInput.style.border = null;
+timeInInput.addEventListener('change', function (evt) {
+  checkTimeInput(evt);
 });
 
-timeInInput.addEventListener('change', function () {
-  checkTimeOptions(timeInOption, timeOutOption);
+timeOutInput.addEventListener('change', function (evt) {
+  checkTimeInput(evt);
 });
 
-timeOutInput.addEventListener('change', function () {
-  checkTimeOptions(timeOutOption, timeInOption);
-});
-
-roomsInput.addEventListener('change', function () {
-  checkRoomsOptions(roomsValues);
-});
-
-form.addEventListener('click', function () {
-  formInputs.forEach(function (input) {
-    if (!input.validity.valid) {
-      input.style.border = '3px solid red';
-    }
-  });
-});
+roomsInput.addEventListener('change', checkRoomsOptions);
