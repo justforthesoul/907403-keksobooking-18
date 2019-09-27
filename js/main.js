@@ -1,10 +1,15 @@
 'use strict';
 
 var CURRENT_COUNT = 8;
+var ENTER_KEYCODE = 13;
+var ESC__KEYCODE = 27;
 var map = document.querySelector('.map');
 var pinImg = document.querySelector('.map__pin--main img');
 var mapPins = map.querySelector('.map__pins');
 var mapFilter = map.querySelector('.map__filters-container');
+var mainPin = document.querySelector('.map__pin--main');
+var formFieldset = document.querySelectorAll('.notice form fieldset');
+var sectionForm = document.querySelector('.notice form');
 
 var MOCK = {
   author: {
@@ -86,6 +91,15 @@ var getRandomArrayItems = function (arr) {
   return copiedItems;
 };
 
+
+var blockFormFieldset = function () {
+  formFieldset.forEach(function (field) {
+    field.disabled = true;
+  });
+};
+
+blockFormFieldset();
+
 var shuffleArray = function (arr) {
 
   for (var i = arr.length - 1; i > 0; i--) {
@@ -151,8 +165,6 @@ var createObject = function () {
 
 var newMockArray = createObject();
 
-map.classList.remove('map--faded');
-
 var createPinElem = function (pinElements) {
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var pinElem = pinTemplate.cloneNode(true);
@@ -166,11 +178,30 @@ var createPinElem = function (pinElements) {
 
 var fragmentPin = document.createDocumentFragment();
 
-for (var i = 0; i < newMockArray.length; i++) {
-  fragmentPin.appendChild(createPinElem(newMockArray[i]));
-}
+var createPin = function (fragment, arr) {
+  for (var i = 0; i < arr.length; i++) {
+    fragment.appendChild(createPinElem(arr[i]));
+  }
+};
 
-mapPins.appendChild(fragmentPin);
+var renderPin = function () {
+  var pinBtn = document.querySelector('button[type="button"]');
+  if (!pinBtn) {
+    createPin(fragmentPin, newMockArray);
+    mapPins.appendChild(fragmentPin);
+  }
+};
+
+var delPin = function () {
+  var pinsBtn = document.querySelectorAll('button[type="button"]');
+  var oldMapFragment = map.querySelector('.map__card');
+  if (oldMapFragment) {
+    oldMapFragment.remove();
+  }
+  pinsBtn.forEach(function (btn) {
+    btn.remove();
+  });
+};
 
 var translateType = function (type) {
   switch (type) {
@@ -197,29 +228,180 @@ var createCardElem = function (cardElements) {
   cardElem.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardElements.offer.checkin + ', выезд до ' + cardElements.offer.checkout;
   var arrFeatures = cardElements.offer.features;
   cardElem.querySelector('.popup__features').innerHTML = '';
-  for (var j = 0; j < arrFeatures.length; j++) {
+  for (var i = 0; i < arrFeatures.length; i++) {
     var featureElement = document.createElement('li');
-    featureElement.className = 'popup__feature popup__feature--' + arrFeatures[j];
+    featureElement.className = 'popup__feature popup__feature--' + arrFeatures[i];
     cardElem.querySelector('.popup__features').appendChild(featureElement);
   }
   cardElem.querySelector('.popup__description').textContent = '';
   var arrPhotos = cardElements.offer.photos;
   cardElem.querySelector('.popup__photos').innerHTML = '';
-  for (var k = 0; k < arrPhotos.length; k++) {
+  for (var j = 0; j < arrPhotos.length; j++) {
     var imgElement = document.createElement('img');
     imgElement.className = 'popup__photo';
     imgElement.alt = 'Фотография жилья';
     imgElement.width = '45';
     imgElement.height = '40';
-    imgElement.src = arrPhotos[k];
+    imgElement.src = arrPhotos[j];
     cardElem.querySelector('.popup__photos').appendChild(imgElement);
   }
   cardElem.querySelector('.popup__avatar').src = cardElements.author.avatar;
   cardElem.classList.add('map__card');
   return cardElem;
 };
-var fragment = document.createDocumentFragment();
 
-fragment.appendChild(createCardElem(newMockArray[0]));
+var address = document.querySelector('#address');
 
-map.insertBefore(fragment, mapFilter);
+var setAdressCoordinates = function () {
+  var pinCoordinates = (mainPin.offsetLeft + pinImg.offsetWidth / 2) + ', ' + (mainPin.offsetTop + pinImg.offsetHeight);
+  address.setAttribute('value', pinCoordinates);
+};
+
+var removeAdressCoordinates = function () {
+  address.setAttribute('value', null);
+};
+
+var activateFormFildset = function () {
+  formFieldset.forEach(function (field) {
+    field.disabled = false;
+  });
+};
+
+var activationPageHandler = function () {
+  map.classList.remove('map--faded');
+  sectionForm.classList.remove('ad-form--disabled');
+  renderPin();
+  setAdressCoordinates();
+  activateFormFildset();
+
+  var showCardHandler = function (element, index) {
+    element.addEventListener('click', function () {
+      var oldMapFragment = map.querySelector('.map__card');
+      var fragmentCard = createCardElem(newMockArray[index]);
+
+      if (oldMapFragment) {
+        map.replaceChild(fragmentCard, oldMapFragment);
+      } else {
+        map.insertBefore(fragmentCard, mapFilter);
+      }
+
+      var popupClose = map.querySelector('.popup__close');
+      popupClose.focus();
+      popupClose.addEventListener('click', function () {
+        map.removeChild(fragmentCard);
+      });
+
+      window.addEventListener('keydown', function (evt) {
+        if (evt.keyCode === ESC__KEYCODE) {
+          evt.preventDefault();
+          if (map.contains(fragmentCard)) {
+            map.removeChild(fragmentCard);
+          }
+        }
+      });
+    });
+  };
+  var pinsBtn = document.querySelectorAll('button[type="button"]');
+  pinsBtn.forEach(function (pin, i) {
+    showCardHandler(pin, i);
+  });
+};
+
+var blockPageHandler = function () {
+  map.classList.add('map--faded');
+  sectionForm.classList.add('ad-form--disabled');
+  delPin();
+  removeAdressCoordinates();
+  blockFormFieldset();
+};
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    evt.preventDefault();
+    activationPageHandler();
+  }
+});
+
+mainPin.addEventListener('click', function () {
+  activationPageHandler();
+});
+
+var form = document.querySelector('.ad-form');
+var typeInput = form.querySelector('select[name="type"]');
+var priceInput = form.querySelector('input[name="price"]');
+var timeInInput = form.querySelector('select[name="timein"]');
+var timeOutInput = form.querySelector('select[name="timeout"]');
+var roomsInput = form.querySelector('select[name="rooms"]');
+var capacityInput = form.querySelector('select[name="capacity"]');
+var capacityOption = capacityInput.querySelectorAll('option');
+
+var checkPrice = function () {
+  if (Number(priceInput.value) > 1000000) {
+    priceInput.setCustomValidity('Максимальная цена не может превашать 1000000');
+  } else if (Number(priceInput.value) < Number(priceInput.placeholder)) {
+    priceInput.setCustomValidity('Минимальная цена для данного вида жилья не может быть меньше' + ' ' + priceInput.placeholder);
+  } else {
+    priceInput.setCustomValidity('');
+  }
+};
+
+var typeRooms = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
+
+var checkTypeInput = function () {
+  priceInput.placeholder = typeRooms[typeInput.value];
+};
+
+var checkTimeInput = function (evt) {
+  switch (evt.target) {
+    case timeInInput:
+      timeOutInput.value = timeInInput.value;
+      break;
+    case timeOutInput:
+      timeInInput.value = timeOutInput.value;
+      break;
+  }
+};
+
+var roomsValues = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0]
+};
+
+var checkRoomsOptions = function () {
+  capacityOption.forEach(function (option) {
+    option.disabled = true;
+  });
+  roomsValues[roomsInput.value].forEach(function (option) {
+    capacityOption.forEach(function (op) {
+      if (Number(op.value) === option) {
+        op.disabled = false;
+        capacityInput.value = op.value;
+      }
+    });
+  });
+};
+
+typeInput.addEventListener('change', checkTypeInput);
+
+priceInput.addEventListener('input', checkPrice);
+
+timeInInput.addEventListener('change', function (evt) {
+  checkTimeInput(evt);
+});
+
+timeOutInput.addEventListener('change', function (evt) {
+  checkTimeInput(evt);
+});
+
+roomsInput.addEventListener('change', checkRoomsOptions);
+
+var resetButton = document.querySelector('.ad-form__reset');
+
+resetButton.addEventListener('click', blockPageHandler);
