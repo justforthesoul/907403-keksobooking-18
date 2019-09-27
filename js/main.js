@@ -403,5 +403,4 @@ timeOutInput.addEventListener('change', function (evt) {
 roomsInput.addEventListener('change', checkRoomsOptions);
 
 var resetButton = document.querySelector('.ad-form__reset');
-
 resetButton.addEventListener('click', blockPageHandler);
