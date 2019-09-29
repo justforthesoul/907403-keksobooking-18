@@ -194,16 +194,16 @@ var showCardHandler = function (data) {
 
 var fragmentPin = document.createDocumentFragment();
 
-var createPin = function (fragment, arr) {
+var createPins = function (fragment, arr) {
   arr.forEach(function (el) {
     fragment.appendChild(createPinElem(el));
   });
 };
 
-var renderPin = function () {
+var renderPins = function () {
   var pinBtn = document.querySelector('button[type="button"]');
   if (!pinBtn) {
-    createPin(fragmentPin, newMockArray);
+    createPins(fragmentPin, newMockArray);
     mapPins.appendChild(fragmentPin);
   }
 };
@@ -303,7 +303,7 @@ var activateFormFildset = function () {
 var activationPageHandler = function () {
   map.classList.remove('map--faded');
   sectionForm.classList.remove('ad-form--disabled');
-  renderPin();
+  renderPins();
   setAdressCoordinates();
   activateFormFildset();
 };
