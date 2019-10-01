@@ -40,8 +40,9 @@
         return 'Дом';
       case 'palace':
         return 'Дворец';
+      default:
+        return 'Неизвестный тип жилья: «' + type + '»';
     }
-    return true;
   };
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');

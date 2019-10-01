@@ -1,16 +1,9 @@
 'use strict';
 
 (function () {
-  var address = document.querySelector('#address');
   var mapPins = window.utils.map.querySelector('.map__pins');
-  var mainPin = window.utils.map.querySelector('.map__pin--main');
   var formFieldset = document.querySelectorAll('.notice form fieldset');
   var sectionForm = document.querySelector('.notice form');
-
-  var setAdressCoordinates = function () {
-    var pinCoordinates = (mainPin.offsetLeft + window.utils.pinImg.offsetWidth / 2) + ', ' + (mainPin.offsetTop + window.utils.pinImg.offsetHeight);
-    address.setAttribute('value', pinCoordinates);
-  };
 
   var activateFormFildset = function () {
     formFieldset.forEach(function (field) {
@@ -38,18 +31,18 @@
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
     renderPins();
-    setAdressCoordinates();
+    window.utils.setAdressCoordinates();
     activateFormFildset();
   };
 
-  mainPin.addEventListener('keydown', function (evt) {
+  window.utils.mainPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.utils.ENTER_KEYCODE) {
       evt.preventDefault();
       activationPageHandler();
     }
   });
 
-  mainPin.addEventListener('click', function () {
+  window.utils.mainPin.addEventListener('click', function () {
     activationPageHandler();
   });
 
@@ -73,7 +66,7 @@
   };
 
   var removeAdressCoordinates = function () {
-    address.setAttribute('value', null);
+    window.utils.address.setAttribute('value', null);
   };
 
   var blockPageHandler = function () {
@@ -86,4 +79,8 @@
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', blockPageHandler);
+
+  window.pagehandler = {
+    activationPageHandler: activationPageHandler
+  };
 })();
