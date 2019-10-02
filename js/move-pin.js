@@ -5,15 +5,15 @@
 
     window.pagehandler.activationPageHandler();
 
-    var XMinLimit = 130;
-    var XMaxLimit = 630;
+    var MinLimitX = 130;
+    var MaxLimitX = 630;
 
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
     };
 
-    var MouseMoveHandler = function (moveEvt) {
+    var mouseMoveHandler = function (moveEvt) {
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -27,28 +27,28 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsXMin = XMinLimit - window.utils.pinImg.offsetHeight;
-      var coordsXMax = XMaxLimit - window.utils.pinImg.offsetHeight;
-      var coordsYMin = -window.utils.pinImg.offsetWidth / 2;
-      var coordsYMax = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
+      var coordsMinX = MinLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMaxX = MaxLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
+      var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 
-      coordsX = coordsX < coordsYMin ? coordsYMin : coordsX;
-      coordsX = coordsX > coordsYMax ? coordsYMax : coordsX;
+      coordsX = coordsX < coordsMinY ? coordsMinY : coordsX;
+      coordsX = coordsX > coordsMaxY ? coordsMaxY : coordsX;
 
-      coordsY = coordsY < coordsXMin ? coordsXMin : coordsY;
-      coordsY = coordsY > coordsXMax ? coordsXMax : coordsY;
+      coordsY = coordsY < coordsMinX ? coordsMinX : coordsY;
+      coordsY = coordsY > coordsMaxX ? coordsMaxX : coordsY;
 
       window.utils.mainPin.style.left = coordsX + 'px';
       window.utils.mainPin.style.top = coordsY + 'px';
       window.utils.setAdressCoordinates();
     };
 
-    var MouseUpHandler = function () {
-      document.removeEventListener('mousemove', MouseMoveHandler);
-      document.removeEventListener('mouseup', MouseUpHandler);
+    var mouseUpHandler = function () {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
     };
 
-    document.addEventListener('mousemove', MouseMoveHandler);
-    document.addEventListener('mouseup', MouseUpHandler);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 })();
