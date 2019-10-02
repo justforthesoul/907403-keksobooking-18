@@ -5,8 +5,8 @@
 
     window.pagehandler.activationPageHandler();
 
-    var MinLimitX = 130;
-    var MaxLimitX = 630;
+    var minLimitX = 130;
+    var maxLimitX = 630;
 
     var startCoords = {
       x: evt.clientX,
@@ -27,8 +27,8 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsMinX = MinLimitX - window.utils.pinImg.offsetHeight;
-      var coordsMaxX = MaxLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMinX = minLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMaxX = maxLimitX - window.utils.pinImg.offsetHeight;
       var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
       var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 
