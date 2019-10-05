@@ -87,9 +87,9 @@
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorElem = errorTemplate.cloneNode(true);
     errorElem.querySelector('.error__message').textContent = errorMessage;
-    document.body.appendChild(errorElem);
+    document.querySelector('main').appendChild(errorElem);
     errorElem.querySelector('.error__button').addEventListener('click', function () {
-      closeError(errorElem);
+      errorElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utils.ESC_KEYCODE) {
@@ -100,12 +100,8 @@
     });
   };
 
-  var closeError = function (el) {
-    el.remove();
-    blockPageHandler();
-  };
-
   window.pagehandler = {
-    activationPageHandler: activationPageHandler
+    activationPageHandler: activationPageHandler,
+    blockPageHandler: blockPageHandler
   };
 })();
