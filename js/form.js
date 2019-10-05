@@ -3,12 +3,15 @@
 (function () {
   var form = document.querySelector('.ad-form');
   var typeInput = form.querySelector('select[name="type"]');
+  var titleInput = form.querySelector('input[name="title"]');
   var priceInput = form.querySelector('input[name="price"]');
   var timeInInput = form.querySelector('select[name="timein"]');
   var timeOutInput = form.querySelector('select[name="timeout"]');
   var roomsInput = form.querySelector('select[name="rooms"]');
   var capacityInput = form.querySelector('select[name="capacity"]');
   var capacityOption = capacityInput.querySelectorAll('option');
+  var formInputs = form.querySelectorAll('input');
+  var submitBtn = form.querySelector('.ad-form__submit');
 
   var checkPrice = function () {
     if (Number(priceInput.value) > 1000000) {
@@ -76,4 +79,23 @@
   });
 
   roomsInput.addEventListener('change', checkRoomsOptions);
+
+  var checkValidity = function () {
+    formInputs.forEach(function (input) {
+      if (!input.validity.valid) {
+        input.style.border = '3px solid red';
+      }
+    });
+  };
+
+  submitBtn.addEventListener('click', checkValidity);
+
+  priceInput.addEventListener('blur', function () {
+    priceInput.style.border = null;
+  });
+
+  titleInput.addEventListener('blur', function () {
+    titleInput.style.border = null;
+  });
+
 })();

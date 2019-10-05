@@ -13,16 +13,12 @@
 
   var fragmentPin = document.createDocumentFragment();
 
-  var createPins = function (fragment, arr) {
-    arr.forEach(function (el) {
-      fragment.appendChild(window.map.createPinElem(el));
-    });
-  };
-
-  var renderPins = function () {
+  var renderPins = function (data) {
     var pinBtn = document.querySelector('button[type="button"]');
     if (!pinBtn) {
-      createPins(fragmentPin, window.data.newMockArray);
+      data.forEach(function (el) {
+        fragmentPin.appendChild(window.map.createPinElem(el));
+      });
       mapPins.appendChild(fragmentPin);
     }
   };
@@ -30,7 +26,7 @@
   var activationPageHandler = function () {
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
-    renderPins();
+    window.load(successHandler, errorHandler);
     window.utils.setAdressCoordinates();
     activateFormFildset();
   };
@@ -66,7 +62,9 @@
   };
 
   var removeAdressCoordinates = function () {
-    window.utils.address.setAttribute('value', null);
+    window.utils.mainPin.style.left = window.utils.START_COORDS_X + 'px';
+    window.utils.mainPin.style.top = window.utils.START_COORDS_Y + 'px';
+    window.utils.setAdressCoordinates();
   };
 
   var blockPageHandler = function () {
@@ -79,6 +77,33 @@
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', blockPageHandler);
+
+  var successHandler = function (data) {
+    renderPins(data);
+  };
+
+
+  var errorHandler = function (errorMessage) {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorElem = errorTemplate.cloneNode(true);
+    errorElem.querySelector('.error__message').textContent = errorMessage;
+    document.body.appendChild(errorElem);
+    errorElem.querySelector('.error__button').addEventListener('click', function () {
+      closeError(errorElem);
+    });
+    window.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        evt.preventDefault();
+        errorElem.remove();
+        blockPageHandler();
+      }
+    });
+  };
+
+  var closeError = function (el) {
+    el.remove();
+    blockPageHandler();
+  };
 
   window.pagehandler = {
     activationPageHandler: activationPageHandler
