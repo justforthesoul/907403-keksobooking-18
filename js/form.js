@@ -86,28 +86,12 @@
       }
     });
   };
-
-  form.addEventListener('submit', function (evt) {
-    checkValidity();
-    window.upload(new FormData(form), successHandler, errorHandler);
-    evt.preventDefault();
-  });
-
-  priceInput.addEventListener('blur', function () {
-    priceInput.style.border = null;
-  });
-
-  titleInput.addEventListener('blur', function () {
-    titleInput.style.border = null;
-  });
-
-
+  
   var successHandler = function () {
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var successElem = successTemplate.cloneNode(true);
     document.querySelector('main').appendChild(successElem);
     window.pagehandler.blockPageHandler();
-    form.reset();
 
     document.addEventListener('click', function () {
       successElem.remove();
@@ -135,5 +119,23 @@
       }
     });
   };
+
+  form.addEventListener('submit', function (evt) {
+    checkValidity();
+    window.upload(new FormData(form), successHandler, errorHandler);
+    evt.preventDefault();
+  });
+
+  priceInput.addEventListener('blur', function () {
+    priceInput.style.border = null;
+  });
+
+  titleInput.addEventListener('blur', function () {
+    titleInput.style.border = null;
+  });
+
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', window.pagehandler.blockPageHandler);
+
 
 })();
