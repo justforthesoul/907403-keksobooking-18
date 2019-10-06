@@ -11,7 +11,6 @@
   var capacityInput = form.querySelector('select[name="capacity"]');
   var capacityOption = capacityInput.querySelectorAll('option');
   var formInputs = form.querySelectorAll('input');
-  var submitBtn = form.querySelector('.ad-form__submit');
 
   var checkPrice = function () {
     if (Number(priceInput.value) > 1000000) {
@@ -87,8 +86,44 @@
       }
     });
   };
+  var successHandler = function () {
+    var successTemplate = document.querySelector('#success').content.querySelector('.success');
+    var successElem = successTemplate.cloneNode(true);
+    document.querySelector('main').appendChild(successElem);
+    window.pagehandler.blockPageHandler();
 
-  submitBtn.addEventListener('click', checkValidity);
+    document.addEventListener('click', function () {
+      successElem.remove();
+    });
+    window.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        evt.preventDefault();
+        successElem.remove();
+      }
+    });
+  };
+
+  var errorHandler = function (errorMessage) {
+    var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorElem = errorTemplate.cloneNode(true);
+    errorElem.querySelector('.error__message').textContent = errorMessage;
+    document.querySelector('main').appendChild(errorElem);
+    errorElem.querySelector('.error__button').addEventListener('click', function () {
+      errorElem.remove();
+    });
+    window.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+        evt.preventDefault();
+        errorElem.remove();
+      }
+    });
+  };
+
+  form.addEventListener('submit', function (evt) {
+    checkValidity();
+    window.upload(new FormData(form), successHandler, errorHandler);
+    evt.preventDefault();
+  });
 
   priceInput.addEventListener('blur', function () {
     priceInput.style.border = null;
@@ -97,5 +132,9 @@
   titleInput.addEventListener('blur', function () {
     titleInput.style.border = null;
   });
+
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', window.pagehandler.blockPageHandler);
+
 
 })();

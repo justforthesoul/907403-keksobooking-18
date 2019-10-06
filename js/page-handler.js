@@ -23,25 +23,6 @@
     }
   };
 
-  var activationPageHandler = function () {
-    window.utils.map.classList.remove('map--faded');
-    sectionForm.classList.remove('ad-form--disabled');
-    window.load(successHandler, errorHandler);
-    window.utils.setAdressCoordinates();
-    activateFormFildset();
-  };
-
-  window.utils.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.ENTER_KEYCODE) {
-      evt.preventDefault();
-      activationPageHandler();
-    }
-  });
-
-  window.utils.mainPin.addEventListener('click', function () {
-    activationPageHandler();
-  });
-
   var blockFormFieldset = function () {
     formFieldset.forEach(function (field) {
       field.disabled = true;
@@ -73,10 +54,8 @@
     clearMap();
     removeAdressCoordinates();
     blockFormFieldset();
+    document.querySelector('.ad-form').reset();
   };
-
-  var resetButton = document.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', blockPageHandler);
 
   var successHandler = function (data) {
     renderPins(data);
@@ -87,9 +66,9 @@
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
     var errorElem = errorTemplate.cloneNode(true);
     errorElem.querySelector('.error__message').textContent = errorMessage;
-    document.body.appendChild(errorElem);
+    document.querySelector('main').appendChild(errorElem);
     errorElem.querySelector('.error__button').addEventListener('click', function () {
-      closeError(errorElem);
+      errorElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.utils.ESC_KEYCODE) {
@@ -100,12 +79,27 @@
     });
   };
 
-  var closeError = function (el) {
-    el.remove();
-    blockPageHandler();
+  var activationPageHandler = function () {
+    window.utils.map.classList.remove('map--faded');
+    sectionForm.classList.remove('ad-form--disabled');
+    window.load(successHandler, errorHandler);
+    window.utils.setAdressCoordinates();
+    activateFormFildset();
   };
 
+  window.utils.mainPin.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.utils.ENTER_KEYCODE) {
+      evt.preventDefault();
+      activationPageHandler();
+    }
+  });
+
+  window.utils.mainPin.addEventListener('click', function () {
+    activationPageHandler();
+  });
+
   window.pagehandler = {
-    activationPageHandler: activationPageHandler
+    activationPageHandler: activationPageHandler,
+    blockPageHandler: blockPageHandler
   };
 })();
