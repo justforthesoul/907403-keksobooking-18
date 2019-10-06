@@ -86,7 +86,6 @@
       }
     });
   };
-  
   var successHandler = function () {
     var successTemplate = document.querySelector('#success').content.querySelector('.success');
     var successElem = successTemplate.cloneNode(true);
