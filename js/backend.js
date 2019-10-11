@@ -1,14 +1,16 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking/data';
+  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
+  var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
+  var SUCCES_CODE = 200;
 
-  window.load = function (onSuccess, onError) {
+  var load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCES_CODE) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -23,20 +25,16 @@
 
     xhr.timeout = 10000;
 
-    xhr.open('GET', URL);
+    xhr.open('GET', LOAD_URL);
     xhr.send();
   };
-})();
 
-(function () {
-  var URL = 'https://js.dump.academy/keksobooking';
-
-  window.upload = function (data, onSuccess, onError) {
+  var upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCES_CODE) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -46,7 +44,13 @@
       onError('Произошла ошибка соединения');
     });
 
-    xhr.open('POST', URL);
+    xhr.open('POST', UPLOAD_URL);
     xhr.send(data);
   };
+
+  window.backend = {
+    load: load,
+    upload: upload
+  };
+
 })();

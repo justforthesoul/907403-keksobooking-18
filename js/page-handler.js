@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var mapPins = window.utils.map.querySelector('.map__pins');
   var formFieldset = document.querySelectorAll('.notice form fieldset');
   var sectionForm = document.querySelector('.notice form');
 
@@ -9,18 +8,6 @@
     formFieldset.forEach(function (field) {
       field.disabled = false;
     });
-  };
-
-  var fragmentPin = document.createDocumentFragment();
-
-  var renderPins = function (data) {
-    var pinBtn = document.querySelector('button[type="button"]');
-    if (!pinBtn) {
-      data.forEach(function (el) {
-        fragmentPin.appendChild(window.map.createPinElem(el));
-      });
-      mapPins.appendChild(fragmentPin);
-    }
   };
 
   var blockFormFieldset = function () {
@@ -55,10 +42,16 @@
     removeAdressCoordinates();
     blockFormFieldset();
     document.querySelector('.ad-form').reset();
+    window.utils.mainPin.addEventListener('click', activationPageHandler);
+  };
+
+  var filteringStart = function (data) {
+    var filteredData = data.slice(0, window.utils.PINS_LIMIT);
+    return filteredData;
   };
 
   var successHandler = function (data) {
-    renderPins(data);
+    window.map.renderPins(filteringStart(data));
   };
 
 
@@ -82,9 +75,10 @@
   var activationPageHandler = function () {
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
-    window.load(successHandler, errorHandler);
+    window.backend.load(successHandler, errorHandler);
     window.utils.setAdressCoordinates();
     activateFormFildset();
+    window.utils.mainPin.removeEventListener('click', activationPageHandler);
   };
 
   window.utils.mainPin.addEventListener('keydown', function (evt) {
@@ -94,12 +88,13 @@
     }
   });
 
-  window.utils.mainPin.addEventListener('click', function () {
-    activationPageHandler();
-  });
+  window.utils.mainPin.addEventListener('click', activationPageHandler);
+
 
   window.pagehandler = {
     activationPageHandler: activationPageHandler,
-    blockPageHandler: blockPageHandler
+    blockPageHandler: blockPageHandler,
+    clearMap: clearMap,
+    errorHandler: errorHandler
   };
 })();

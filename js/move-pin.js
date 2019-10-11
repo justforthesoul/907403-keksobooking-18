@@ -2,9 +2,6 @@
 
 (function () {
   window.utils.mainPin.addEventListener('mousedown', function (evt) {
-
-    window.pagehandler.activationPageHandler();
-
     var minLimitX = 130;
     var maxLimitX = 630;
 
