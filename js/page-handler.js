@@ -45,13 +45,8 @@
     window.utils.mainPin.addEventListener('click', activationPageHandler);
   };
 
-  var filteringStart = function (data) {
-    var filteredData = data.slice(0, window.utils.PINS_LIMIT);
-    return filteredData;
-  };
-
   var successHandler = function (data) {
-    window.map.renderPins(filteringStart(data));
+    window.map.renderPins(data.slice(0, window.utils.PINS_LIMIT));
   };
 
 
