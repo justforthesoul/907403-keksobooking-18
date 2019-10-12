@@ -42,13 +42,13 @@
     removeAdressCoordinates();
     blockFormFieldset();
     document.querySelector('.ad-form').reset();
+    window.filter.filter.reset();
     window.utils.mainPin.addEventListener('click', activationPageHandler);
   };
 
-  var successHandler = function (data) {
-    window.map.renderPins(data.slice(0, window.utils.PINS_LIMIT));
+  var successHandler = function (adverts) {
+    window.adverts = adverts;
   };
-
 
   var errorHandler = function (errorMessage) {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -70,9 +70,9 @@
   var activationPageHandler = function () {
     window.utils.map.classList.remove('map--faded');
     sectionForm.classList.remove('ad-form--disabled');
-    window.backend.load(successHandler, errorHandler);
     window.utils.setAdressCoordinates();
     activateFormFildset();
+    window.map.renderPins(window.adverts.slice(0, window.utils.PINS_LIMIT));
     window.utils.mainPin.removeEventListener('click', activationPageHandler);
   };
 
@@ -83,8 +83,8 @@
     }
   });
 
+  window.backend.load(successHandler, errorHandler);
   window.utils.mainPin.addEventListener('click', activationPageHandler);
-
 
   window.pagehandler = {
     activationPageHandler: activationPageHandler,
