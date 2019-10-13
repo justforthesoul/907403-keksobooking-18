@@ -59,7 +59,7 @@
   var getFilteringData = function (data) {
     return data.filter(function (it) {
       return filteringData(it, housingType, 'type') &&
-             filteringPrice(it, housingType, 'type') &&
+             filteringPrice(it) &&
              filteringData(it, housingRooms, 'rooms') &&
              filteringData(it, housingGuests, 'guests') &&
              filteringCheckboxes(it);
