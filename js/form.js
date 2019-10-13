@@ -67,19 +67,14 @@
   };
 
   typeInput.addEventListener('change', checkTypeInput);
-
   priceInput.addEventListener('input', checkPrice);
-
   timeInInput.addEventListener('change', function (evt) {
     checkTimeInput(evt);
   });
-
   timeOutInput.addEventListener('change', function (evt) {
     checkTimeInput(evt);
   });
-
   roomsInput.addEventListener('change', checkRoomsOptions);
-
   var checkValidity = function () {
     formInputs.forEach(function (input) {
       if (!input.validity.valid) {
