@@ -16,8 +16,8 @@
     HIGH: 'high'
   };
 
-  var filteringData = function (data, input, name) {
-    return String(input.value) === 'any' ? data : String(input.value) === String(data.offer[name]);
+  var filteringType = function (data) {
+    return String(housingType.value) === 'any' ? data : String(housingType.value) === String(data.offer.type);
   };
 
   var filteringPrice = function (data) {
@@ -31,6 +31,14 @@
       default:
         return data;
     }
+  };
+
+  var filteringRooms = function (data) {
+    return String(housingRooms.value) === 'any' ? data : String(housingRooms.value) === String(data.offer.rooms);
+  };
+
+  var filteringGuests = function (data) {
+    return String(housingGuests.value) === 'any' ? data : String(housingGuests.value) === String(data.offer.guests);
   };
 
   var getCheckboxesValue = function () {
@@ -58,10 +66,10 @@
 
   var getFilteringData = function (data) {
     return data.filter(function (it) {
-      return filteringData(it, housingType, 'type') &&
+      return filteringType(it) &&
              filteringPrice(it) &&
-             filteringData(it, housingRooms, 'rooms') &&
-             filteringData(it, housingGuests, 'guests') &&
+             filteringRooms(it) &&
+             filteringGuests(it) &&
              filteringCheckboxes(it);
     }).slice(0, window.utils.PINS_LIMIT);
   };

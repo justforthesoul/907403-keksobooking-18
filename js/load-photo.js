@@ -1,0 +1,57 @@
+'use strict';
+
+(function () {
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var AVATAR_START_SRC = 'img/muffin-grey.svg';
+  var avatarChooser = document.querySelector('.ad-form-header__input');
+  var photoChooser = document.querySelector('.ad-form__input');
+  var avatarContainer = document.querySelector('.ad-form-header__upload');
+  var photoContainer = document.querySelector('.ad-form__photo');
+  var preview = avatarContainer.querySelector('img');
+
+  var onLoadChange = function (evt) {
+    var fileChooser = evt.target;
+    var file = fileChooser.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      reader.addEventListener('load', function () {
+        var result = reader.result;
+        switch (fileChooser) {
+          case avatarChooser:
+            preview.src = result;
+            break;
+          case photoChooser:
+            var imgElement = document.createElement('img');
+            imgElement.src = result;
+            imgElement.style.maxWidth = '70px';
+            imgElement.style.maxHeight = '70px';
+            photoContainer.appendChild(imgElement);
+            break;
+        }
+      });
+      reader.readAsDataURL(file);
+    }
+  };
+
+  var clearImg = function () {
+    preview.src = AVATAR_START_SRC;
+    var formPfotos = photoContainer.querySelectorAll('img');
+    formPfotos.forEach(function (img) {
+      img.remove();
+    });
+  };
+
+  avatarChooser.addEventListener('change', onLoadChange);
+  photoChooser.addEventListener('change', onLoadChange);
+
+  window.loadPhooto = {
+    clearImg: clearImg
+  };
+})();
