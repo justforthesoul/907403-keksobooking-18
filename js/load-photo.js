@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-  var AVATAR_START_SRC = 'img/muffin-grey.svg';
   var avatarChooser = document.querySelector('.ad-form-header__input');
   var photoChooser = document.querySelector('.ad-form__input');
   var avatarContainer = document.querySelector('.ad-form-header__upload');
@@ -14,7 +12,7 @@
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
 
-    var matches = FILE_TYPES.some(function (it) {
+    var matches = window.const.FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
 
@@ -41,7 +39,7 @@
   };
 
   var clearImg = function () {
-    preview.src = AVATAR_START_SRC;
+    preview.src = window.const.AVATAR_START_SRC;
     var formPfotos = photoContainer.querySelectorAll('img');
     formPfotos.forEach(function (img) {
       img.remove();

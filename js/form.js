@@ -97,7 +97,7 @@
       successElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+      if (evt.keyCode === window.const.ESC_KEYCODE) {
         evt.preventDefault();
         successElem.remove();
       }
@@ -113,7 +113,7 @@
       errorElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+      if (evt.keyCode === window.const.ESC_KEYCODE) {
         evt.preventDefault();
         errorElem.remove();
       }
