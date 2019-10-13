@@ -11,6 +11,7 @@
   var capacityInput = form.querySelector('select[name="capacity"]');
   var capacityOption = capacityInput.querySelectorAll('option');
   var formInputs = form.querySelectorAll('input');
+  var sendBtn = form.querySelector('.ad-form__submit');
 
   var checkPrice = function () {
     if (Number(priceInput.value) > 1000000) {
@@ -22,7 +23,7 @@
     }
   };
 
-  var typeRooms = {
+  var RoomType = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
@@ -30,7 +31,7 @@
   };
 
   var checkTypeInput = function () {
-    priceInput.placeholder = typeRooms[typeInput.value];
+    priceInput.placeholder = RoomType[typeInput.value];
   };
 
   var checkTimeInput = function (evt) {
@@ -44,7 +45,7 @@
     }
   };
 
-  var roomsValues = {
+  var RoomValue = {
     1: [1],
     2: [1, 2],
     3: [1, 2, 3],
@@ -55,7 +56,7 @@
     capacityOption.forEach(function (option) {
       option.disabled = true;
     });
-    roomsValues[roomsInput.value].forEach(function (option) {
+    RoomValue[roomsInput.value].forEach(function (option) {
       capacityOption.forEach(function (op) {
         if (Number(op.value) === option) {
           op.disabled = false;
@@ -119,9 +120,10 @@
     });
   };
 
+  sendBtn.addEventListener('click', checkValidity);
+
   form.addEventListener('submit', function (evt) {
-    checkValidity();
-    window.upload(new FormData(form), successHandler, errorHandler);
+    window.backend.upload(new FormData(form), successHandler, errorHandler);
     evt.preventDefault();
   });
 
@@ -135,6 +137,5 @@
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', window.pagehandler.blockPageHandler);
-
 
 })();
