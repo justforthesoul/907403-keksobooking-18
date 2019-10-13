@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MAX_PRICE = 50000;
+  var MIN_PRICE = 10000;
   var filter = document.querySelector('.map__filters');
   var housingType = filter.querySelector('#housing-type');
   var housingPrice = filter.querySelector('#housing-price');
@@ -9,51 +11,36 @@
   var mapFeature = filter.querySelectorAll('.map__checkbox');
 
   var PriceRange = {
-    low: {
-      min: 0,
-      max: 9999
-    },
-    middle: {
-      min: 10000,
-      max: 50000
-    },
-    high: {
-      min: 50000,
-      max: Infinity
-    }
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
   };
 
   var filteringData = function (data, input, name) {
-    var filteredData = data;
-    if (input.value !== 'any') {
-      filteredData = filteredData.filter(function (arr) {
-        return String(arr.offer[name]) === String(input.value);
-      });
-    }
-    return filteredData;
+    return String(input.value) === 'any' ? data : String(input.value) === String(data.offer[name]);
   };
 
   var filteringPrice = function (data) {
-    var filteredData = data;
-    if (housingPrice.value !== 'any') {
-      filteredData = filteredData.filter(function (arr) {
-        if (Number(arr.offer.price) >= Number(PriceRange[housingPrice.value].min) && Number(arr.offer.price) <= Number(PriceRange[housingPrice.value].max)) {
-          var filteringArr = arr;
-        }
-        return filteringArr;
-      });
+    switch (housingPrice.value) {
+      case PriceRange.LOW:
+        return data.offer.price < MIN_PRICE;
+      case PriceRange.MIDDLE:
+        return data.offer.price >= MIN_PRICE && data.offer.price <= MAX_PRICE;
+      case PriceRange.HIGH:
+        return data.offer.price > MAX_PRICE;
+      default:
+        return data;
     }
-    return filteredData;
   };
 
-  var getInputsValue = function () {
-    var inputsValue = [];
+  var getCheckboxesValue = function () {
+    var checkboxesValue = [];
     mapFeature.forEach(function (input) {
       if (input.checked) {
-        inputsValue.push(input.value);
+        checkboxesValue.push(input.value);
       }
     });
-    return inputsValue;
+    return checkboxesValue;
   };
 
   var getArrayCompare = function (arr1, arr2) {
@@ -65,32 +52,30 @@
     return true;
   };
 
-  var filteringInputs = function (data) {
-    var filteredInputs = data;
-    var filteredFeatures = getInputsValue();
-    filteredInputs = filteredInputs.filter(function (arr) {
-      var loadFeatures = arr.offer.features;
-      if (getArrayCompare(loadFeatures, filteredFeatures)) {
-        var filteringArr = arr;
-      }
-      return filteringArr;
-    });
-    return filteredInputs;
+  var filteringCheckboxes = function (data) {
+    return (getArrayCompare(data.offer.features, getCheckboxesValue())) ? data : false;
   };
 
   var getFilteringData = function (data) {
-    return filteringInputs(filteringData(filteringData(filteringPrice(filteringData(data, housingType, 'type')), housingRooms, 'rooms'), housingGuests, 'guests'));
+    return data.filter(function (it) {
+      return filteringData(it, housingType, 'type') &&
+             filteringPrice(it, housingType, 'type') &&
+             filteringData(it, housingRooms, 'rooms') &&
+             filteringData(it, housingGuests, 'guests') &&
+             filteringCheckboxes(it);
+    }).slice(0, window.utils.PINS_LIMIT);
   };
 
   var changeTypeHandler = window.debounce(function () {
     window.pagehandler.clearMap();
-    window.map.renderPins(getFilteringData(window.adverts).slice(0, window.utils.PINS_LIMIT));
+    window.map.renderPins(getFilteringData(window.adverts));
   });
 
   filter.addEventListener('change', changeTypeHandler);
 
   window.filter = {
-    filter: filter
+    filter: filter,
+    getFilteringData: getFilteringData
   };
 
 })();
