@@ -2,9 +2,6 @@
 
 (function () {
   window.utils.mainPin.addEventListener('mousedown', function (evt) {
-    var minLimitX = 130;
-    var maxLimitX = 630;
-
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -24,8 +21,8 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsMinX = minLimitX - window.utils.pinImg.offsetHeight;
-      var coordsMaxX = maxLimitX - window.utils.pinImg.offsetHeight;
+      var coordsMinX = window.const.MIN_LIMIT_X - window.utils.pinImg.offsetHeight;
+      var coordsMaxX = window.const.MAX_LIMIT_X - window.utils.pinImg.offsetHeight;
       var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
       var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 

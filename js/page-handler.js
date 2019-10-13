@@ -30,8 +30,8 @@
   };
 
   var removeAdressCoordinates = function () {
-    window.utils.mainPin.style.left = window.utils.START_COORDS_X + 'px';
-    window.utils.mainPin.style.top = window.utils.START_COORDS_Y + 'px';
+    window.utils.mainPin.style.left = window.const.START_COORDS_X + 'px';
+    window.utils.mainPin.style.top = window.const.START_COORDS_Y + 'px';
     window.utils.setAdressCoordinates();
   };
 
@@ -43,7 +43,7 @@
     blockFormFieldset();
     window.loadPhooto.clearImg();
     document.querySelector('.ad-form').reset();
-    window.filter.filter.reset();
+    window.utils.filter.reset();
     window.utils.mainPin.addEventListener('click', activationPageHandler);
   };
 
@@ -61,7 +61,7 @@
       errorElem.remove();
     });
     window.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.utils.ESC_KEYCODE) {
+      if (evt.keyCode === window.const.ESC_KEYCODE) {
         evt.preventDefault();
         errorElem.remove();
         blockPageHandler();
@@ -79,7 +79,7 @@
   };
 
   window.utils.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.ENTER_KEYCODE) {
+    if (evt.keyCode === window.const.ENTER_KEYCODE) {
       evt.preventDefault();
       activationPageHandler();
     }

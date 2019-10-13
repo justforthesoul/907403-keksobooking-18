@@ -81,7 +81,7 @@
 
   var closeCardHandler = function (evt) {
     var card = document.querySelector('.map__card');
-    if (evt.keyCode === window.utils.ESC_KEYCODE && card) {
+    if (evt.keyCode === window.const.ESC_KEYCODE && card) {
       evt.preventDefault();
       card.remove();
     }
