@@ -1,14 +1,12 @@
 'use strict';
 
 (function () {
-  var MAX_PRICE = 50000;
-  var MIN_PRICE = 10000;
   var filter = document.querySelector('.map__filters');
-  var housingType = filter.querySelector('#housing-type');
-  var housingPrice = filter.querySelector('#housing-price');
-  var housingRooms = filter.querySelector('#housing-rooms');
-  var housingGuests = filter.querySelector('#housing-guests');
-  var mapFeature = filter.querySelectorAll('.map__checkbox');
+  var housingType = window.utils.filter.querySelector('#housing-type');
+  var housingPrice = window.utils.filter.querySelector('#housing-price');
+  var housingRooms = window.utils.filter.querySelector('#housing-rooms');
+  var housingGuests = window.utils.filter.querySelector('#housing-guests');
+  var mapFeature = window.utils.filter.querySelectorAll('.map__checkbox');
 
   var PriceRange = {
     LOW: 'low',
@@ -23,11 +21,11 @@
   var filteringPrice = function (data) {
     switch (housingPrice.value) {
       case PriceRange.LOW:
-        return data.offer.price < MIN_PRICE;
+        return data.offer.price < window.const.MIN_PRICE;
       case PriceRange.MIDDLE:
-        return data.offer.price >= MIN_PRICE && data.offer.price <= MAX_PRICE;
+        return data.offer.price >= window.const.MIN_PRICE && data.offer.price <= window.const.MAX_PRICE;
       case PriceRange.HIGH:
-        return data.offer.price > MAX_PRICE;
+        return data.offer.price > window.const.MAX_PRICE;
       default:
         return data;
     }
@@ -71,7 +69,7 @@
              filteringRooms(it) &&
              filteringGuests(it) &&
              filteringCheckboxes(it);
-    }).slice(0, window.utils.PINS_LIMIT);
+    }).slice(0, window.const.PINS_LIMIT);
   };
 
   var changeTypeHandler = window.debounce(function () {
@@ -82,7 +80,6 @@
   filter.addEventListener('change', changeTypeHandler);
 
   window.filter = {
-    filter: filter,
     getFilteringData: getFilteringData
   };
 
