@@ -41,6 +41,7 @@
     clearMap();
     removeAdressCoordinates();
     blockFormFieldset();
+    window.loadPhooto.clearImg();
     document.querySelector('.ad-form').reset();
     window.filter.filter.reset();
     window.utils.mainPin.addEventListener('click', activationPageHandler);
