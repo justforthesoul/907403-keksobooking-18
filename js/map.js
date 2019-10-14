@@ -31,10 +31,10 @@
   };
 
   var OfferType = {
-    'flat': 'Квартира',
-    'bungalo': 'Бунгало',
-    'house': 'Дом',
-    'palace': 'Дворец'
+    FLAT: 'Квартира',
+    BUNGALO: 'Бунгало',
+    HOUSE: 'Дом',
+    PALACE: 'Дворец'
   };
 
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
@@ -43,7 +43,7 @@
     cardElem.querySelector('.popup__title').textContent = data.offer.title;
     cardElem.querySelector('.popup__text--address').textContent = data.offer.address;
     cardElem.querySelector('.popup__text--price').textContent = data.offer.price + '₽/ночь';
-    cardElem.querySelector('.popup__type').textContent = OfferType[data.offer.type];
+    cardElem.querySelector('.popup__type').textContent = OfferType[data.offer.type.toUpperCase()];
     cardElem.querySelector('.popup__text--capacity').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
     cardElem.querySelector('.popup__text--time').textContent = 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
     var arrFeatures = data.offer.features;

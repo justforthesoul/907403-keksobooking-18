@@ -24,14 +24,14 @@
   };
 
   var RoomType = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
+    BUNGALO: 0,
+    FLAT: 1000,
+    HOUSE: 5000,
+    PALACE: 10000
   };
 
   var checkTypeInput = function () {
-    priceInput.placeholder = RoomType[typeInput.value];
+    priceInput.placeholder = RoomType[typeInput.value.toUpperCase()];
   };
 
   var checkTimeInput = function (evt) {
