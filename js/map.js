@@ -15,7 +15,6 @@
     pinElem.addEventListener('click', function () {
       showCardHandler(data);
     });
-
     return pinElem;
   };
 
