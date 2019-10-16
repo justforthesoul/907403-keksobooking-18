@@ -7,10 +7,10 @@
     HOUSE: 'Дом',
     PALACE: 'Дворец'
   };
-  var mapFilter = window.utils.map.querySelector('.map__filters-container');
+  var mapFilterElement = window.utils.map.querySelector('.map__filters-container');
   var createPinElem = function (data) {
-    var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-    var pinElement = pinTemplate.cloneNode(true);
+    var pinTemplateElement = document.querySelector('#pin').content.querySelector('.map__pin');
+    var pinElement = pinTemplateElement.cloneNode(true);
 
     if (data.offer) {
       pinElement.style.left = (data.location.x - window.const.PIN_WIDTH / 2) + 'px';
@@ -29,42 +29,46 @@
     return true;
   };
 
+  var checkOffer = function (offer) {
+    return offer === '' ? '' : offer;
+  };
+
+  var checkPriceOffer = function (data) {
+    return data.offer.price === '' || data.offer.price === undefined ? '' : data.offer.price + '₽/ночь';
+  };
+
+  var checkCapacityOffer = function (data) {
+    return data.offer.rooms === '' || data.offer.rooms === undefined || data.offer.guests === '' || data.offer.guests === undefined ? '' : data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
+  };
+
+  var checkTimeOffer = function (data) {
+    return data.offer.checkin === '' || data.offer.checkin === undefined || data.offer.checkout === '' || data.offer.checkout === undefined ? '' : 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
+  };
+
   var showCard = function (data, elem) {
     var cardElement = document.querySelector('.map__card');
     if (cardElement) {
-      var activePin = document.querySelector('.map__pin--active');
+      var activePinElement = document.querySelector('.map__pin--active');
       window.utils.map.replaceChild(createCardElement(data), cardElement);
-      activePin.classList.remove('map__pin--active');
+      activePinElement.classList.remove('map__pin--active');
     } else {
-      window.utils.map.insertBefore(createCardElement(data), mapFilter);
+      window.utils.map.insertBefore(createCardElement(data), mapFilterElement);
       elem.classList.add('map__pin--active');
     }
-    var popupClose = window.utils.map.querySelector('.popup__close');
-    popupClose.focus();
+    var popupCloseElement = window.utils.map.querySelector('.popup__close');
+    popupCloseElement.focus();
   };
 
   var cardTemplateElement = document.querySelector('#card').content.querySelector('.map__card');
   var createCardElement = function (data) {
     var cardElement = cardTemplateElement.cloneNode(true);
 
-    var checkOffer = function (offer, text) {
-      return offer === '' ? '' : offer + text;
-    };
-
-    var checkCapacityOffer = function () {
-      return data.offer.rooms === '' && data.offer.guests === '' ? '' : data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
-    };
-
-    var checkTimeOffer = function () {
-      return data.offer.checkin === '' && data.offer.checkin === '' ? '' : 'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
-    };
-
     cardElement.querySelector('.popup__title').textContent = checkOffer(data.offer.title);
     cardElement.querySelector('.popup__text--address').textContent = checkOffer(data.offer.address);
-    cardElement.querySelector('.popup__text--price').textContent = checkOffer(data.offer.price, '₽/ночь');
+    cardElement.querySelector('.popup__text--price').textContent = checkPriceOffer(data);
     cardElement.querySelector('.popup__type').textContent = AccommodationType[checkOffer(data.offer.type).toUpperCase()];
-    cardElement.querySelector('.popup__text--capacity').textContent = checkCapacityOffer();
-    cardElement.querySelector('.popup__text--time').textContent = checkTimeOffer();
+    cardElement.querySelector('.popup__text--capacity').textContent = checkCapacityOffer(data);
+    cardElement.querySelector('.popup__text--time').textContent = checkTimeOffer(data);
 
     var arrFeatures = data.offer.features;
     cardElement.querySelector('.popup__features').innerHTML = '';

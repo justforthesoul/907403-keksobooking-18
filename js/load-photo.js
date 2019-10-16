@@ -1,11 +1,11 @@
 'use strict';
 
 (function () {
-  var avatarChooser = document.querySelector('.ad-form-header__input');
-  var photoChooser = document.querySelector('.ad-form__input');
-  var avatarContainer = document.querySelector('.ad-form-header__upload');
-  var photoContainer = document.querySelector('.ad-form__photo');
-  var preview = avatarContainer.querySelector('img');
+  var avatarChooserElement = document.querySelector('.ad-form-header__input');
+  var photoChooserElement = document.querySelector('.ad-form__input');
+  var avatarContainerElement = document.querySelector('.ad-form-header__upload');
+  var photoContainerElement = document.querySelector('.ad-form__photo');
+  var previewElement = avatarContainerElement.querySelector('img');
 
   var loadChangeHandler = function (evt) {
     var fileChooser = evt.target;
@@ -22,15 +22,15 @@
       reader.addEventListener('load', function () {
         var result = reader.result;
         switch (fileChooser) {
-          case avatarChooser:
-            preview.src = result;
+          case avatarChooserElement:
+            previewElement.src = result;
             break;
-          case photoChooser:
+          case photoChooserElement:
             var imgElement = document.createElement('img');
             imgElement.src = result;
             imgElement.style.maxWidth = '70px';
             imgElement.style.maxHeight = '70px';
-            photoContainer.appendChild(imgElement);
+            photoContainerElement.appendChild(imgElement);
             break;
         }
       });
@@ -39,15 +39,15 @@
   };
 
   var clearImg = function () {
-    preview.src = window.const.AVATAR_START_SRC;
-    var formPfotos = photoContainer.querySelectorAll('img');
-    formPfotos.forEach(function (img) {
+    previewElement.src = window.const.AVATAR_START_SRC;
+    var formPfotoslement = photoContainerElement.querySelectorAll('img');
+    formPfotoslement.forEach(function (img) {
       img.remove();
     });
   };
 
-  avatarChooser.addEventListener('change', loadChangeHandler);
-  photoChooser.addEventListener('change', loadChangeHandler);
+  avatarChooserElement.addEventListener('change', loadChangeHandler);
+  photoChooserElement.addEventListener('change', loadChangeHandler);
 
   window.loadPhooto = {
     clearImg: clearImg

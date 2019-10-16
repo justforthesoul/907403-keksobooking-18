@@ -112,7 +112,7 @@
     window.removeEventListener('click', buttonClickHandler);
   };
 
-  var resetButton = document.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', buttonClickHandler);
+  var resetButtonElement = document.querySelector('.ad-form__reset');
+  resetButtonElement.addEventListener('click', buttonClickHandler);
 
 })();
