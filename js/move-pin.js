@@ -8,7 +8,6 @@
     };
 
     var mouseMoveHandler = function (moveEvt) {
-
       var shift = {
         x: startCoords.x - moveEvt.clientX,
         y: startCoords.y - moveEvt.clientY
@@ -21,10 +20,13 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsMinX = window.const.MIN_LIMIT_X - window.utils.pinImg.offsetHeight;
-      var coordsMaxX = window.const.MAX_LIMIT_X - window.utils.pinImg.offsetHeight;
+      var coordsMinX =
+        window.const.MIN_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
+      var coordsMaxX =
+        window.const.MAX_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
       var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
-      var coordsMaxY = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
+      var coordsMaxY =
+        window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 
       coordsX = coordsX < coordsMinY ? coordsMinY : coordsX;
       coordsX = coordsX > coordsMaxY ? coordsMaxY : coordsX;

@@ -7,7 +7,7 @@
   var photoContainer = document.querySelector('.ad-form__photo');
   var preview = avatarContainer.querySelector('img');
 
-  var onLoadChange = function (evt) {
+  var loadChangeHandler = function (evt) {
     var fileChooser = evt.target;
     var file = fileChooser.files[0];
     var fileName = file.name.toLowerCase();
@@ -46,8 +46,8 @@
     });
   };
 
-  avatarChooser.addEventListener('change', onLoadChange);
-  photoChooser.addEventListener('change', onLoadChange);
+  avatarChooser.addEventListener('change', loadChangeHandler);
+  photoChooser.addEventListener('change', loadChangeHandler);
 
   window.loadPhooto = {
     clearImg: clearImg
