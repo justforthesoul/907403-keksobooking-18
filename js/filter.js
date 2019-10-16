@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var PriceRange = {
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  };
   var housingTypeElement = window.utils.filter.querySelector('#housing-type');
   var housingPriceElement = window.utils.filter.querySelector('#housing-price');
   var housingRoomsElement = window.utils.filter.querySelector('#housing-rooms');
@@ -27,12 +32,6 @@
     filterByFeaturesElements.forEach(function (box) {
       box.disabled = false;
     });
-  };
-
-  var PriceRange = {
-    LOW: 'low',
-    MIDDLE: 'middle',
-    HIGH: 'high'
   };
 
   var filterType = function (data) {
