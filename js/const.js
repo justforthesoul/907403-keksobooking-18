@@ -5,7 +5,7 @@
   var AVATAR_START_SRC = 'img/muffin-grey.svg';
   var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
   var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
-  var SUCCES_CODE = 200;
+  var SUCCESS_CODE = 200;
   var DEBOUNCE_INTERVAL = 500;
   var MAX_PRICE = 50000;
   var MIN_PRICE = 10000;
@@ -28,7 +28,7 @@
     AVATAR_START_SRC: AVATAR_START_SRC,
     LOAD_URL: LOAD_URL,
     UPLOAD_URL: UPLOAD_URL,
-    SUCCES_CODE: SUCCES_CODE,
+    SUCCESS_CODE: SUCCESS_CODE,
     DEBOUNCE_INTERVAL: DEBOUNCE_INTERVAL,
     MAX_PRICE: MAX_PRICE,
     MIN_PRICE: MIN_PRICE,

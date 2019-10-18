@@ -1,24 +1,22 @@
 'use strict';
 
 (function () {
-  var formFieldsetElement = document.querySelectorAll('.notice form fieldset');
+  var formFieldsetElements = document.querySelectorAll('.notice form fieldset');
   var sectionFormElement = document.querySelector('.notice form');
   var errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
   var errorElemElement = errorTemplateElement.cloneNode(true);
 
   var activateFormFildset = function () {
-    formFieldsetElement.forEach(function (field) {
+    formFieldsetElements.forEach(function (field) {
       field.disabled = false;
     });
   };
 
   var blockFormFieldset = function () {
-    formFieldsetElement.forEach(function (field) {
+    formFieldsetElements.forEach(function (field) {
       field.disabled = true;
     });
   };
-
-  blockFormFieldset();
 
   var clearMap = function () {
     var pinsBtnElement = document.querySelectorAll('button[type="button"]');
@@ -31,23 +29,23 @@
     });
   };
 
-  var removeAdressCoordinates = function () {
+  var removeAddressCoordinates = function () {
     window.utils.mainPin.style.left = window.const.START_COORDS_X + 'px';
     window.utils.mainPin.style.top = window.const.START_COORDS_Y + 'px';
-    window.utils.setAdressCoordinates();
+    window.utils.setAddressCoordinates();
   };
 
   var blockPage = function () {
     window.utils.map.classList.add('map--faded');
     sectionFormElement.classList.add('ad-form--disabled');
     clearMap();
-    removeAdressCoordinates();
+    removeAddressCoordinates();
     blockFormFieldset();
     window.filter.block();
     window.loadPhooto.clearImg();
     window.utils.formElement.reset();
     window.utils.filter.reset();
-    window.utils.setSratrAdressCoordinates();
+    window.utils.setSratrAddressCoordinates();
     window.utils.mainPin.addEventListener('mousedown', pinMousedownHandler);
   };
 
@@ -96,7 +94,7 @@
     window.backend.load(successHandler, errorHandler);
     window.utils.map.classList.remove('map--faded');
     sectionFormElement.classList.remove('ad-form--disabled');
-    window.utils.setAdressCoordinates();
+    window.utils.setAddressCoordinates();
     activateFormFildset();
   };
 
@@ -115,12 +113,12 @@
   };
 
   window.utils.mainPin.addEventListener('keydown', pinKeydownHandler);
-
   window.utils.mainPin.addEventListener('mousedown', pinMousedownHandler);
 
   window.control = {
     blockPage: blockPage,
     clearMap: clearMap,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    blockFormFieldset: blockFormFieldset
   };
 })();

@@ -10,7 +10,7 @@
   var housingPriceElement = window.utils.filter.querySelector('#housing-price');
   var housingRoomsElement = window.utils.filter.querySelector('#housing-rooms');
   var housingGuestsElement = window.utils.filter.querySelector('#housing-guests');
-  var mapFeatureElement = window.utils.filter.querySelectorAll('.map__checkbox');
+  var mapFeatureElements = window.utils.filter.querySelectorAll('.map__checkbox');
   var filtersSelectElements = window.utils.filter.querySelectorAll('.map__filter');
   var filterByFeaturesElements = window.utils.filter.querySelectorAll('[name="features"]');
 
@@ -22,8 +22,6 @@
       box.disabled = true;
     });
   };
-
-  blockFilter();
 
   var unBlockFilter = function () {
     filtersSelectElements.forEach(function (sel) {
@@ -61,7 +59,7 @@
 
   var getCheckboxesValue = function () {
     var checkboxesValues = [];
-    mapFeatureElement.forEach(function (input) {
+    mapFeatureElements.forEach(function (input) {
       if (input.checked) {
         checkboxesValues.push(input.value);
       }

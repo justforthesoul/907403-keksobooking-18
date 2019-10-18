@@ -1,11 +1,23 @@
 'use strict';
 
 (function () {
-  var RoomValueType = {
-    1: [1],
-    2: [1, 2],
-    3: [1, 2, 3],
-    100: [0]
+  var capacityRoomsMapping = {
+    '1': {
+      value: 1,
+      items: [2]
+    },
+    '2': {
+      value: 2,
+      items: [1, 2]
+    },
+    '3': {
+      value: 3,
+      items: [0, 1, 2]
+    },
+    '100': {
+      value: 0,
+      items: [3]
+    }
   };
   var RoomPriceType = {
     BUNGALO: 0,
@@ -20,8 +32,8 @@
   var timeOutInputElement = window.utils.formElement.querySelector('select[name="timeout"]');
   var roomsInputElement = window.utils.formElement.querySelector('select[name="rooms"]');
   var capacityInputElement = window.utils.formElement.querySelector('select[name="capacity"]');
-  var capacityOptionElement = capacityInputElement.querySelectorAll('option');
-  var formInputsElement = window.utils.formElement.querySelectorAll('input');
+  var capacityOptionElements = capacityInputElement.querySelectorAll('option');
+  var formInputsElements = window.utils.formElement.querySelectorAll('input');
   var sendBtnElement = window.utils.formElement.querySelector('.ad-form__submit');
   var successTemplateElement = document.querySelector('#success').content.querySelector('.success');
   var successElement = successTemplateElement.cloneNode(true);
@@ -42,26 +54,22 @@
     }
   };
 
-  var selectRoomsChangeHandler = function () {
-    capacityOptionElement.forEach(function (option) {
-      option.disabled = true;
+  function selectRoomsChangeHandler() {
+    capacityOptionElements.forEach(function (option) {
+      option.classList.add('hidden');
     });
-    RoomValueType[roomsInputElement.value].forEach(function (option) {
-      capacityOptionElement.forEach(function (op) {
-        if (Number(op.value) === option) {
-          op.disabled = false;
-          capacityInputElement.value = op.value;
-        }
-      });
+    capacityRoomsMapping[roomsInputElement.value].items.forEach(function (item) {
+      capacityOptionElements[item].classList.remove('hidden');
     });
-  };
+    capacityInputElement.value = capacityRoomsMapping[roomsInputElement.value].value;
+  }
 
   typeInputElement.addEventListener('change', selectTypeChangeHandler);
   timeInInputElement.addEventListener('change', selectTimeChangeHandler);
   timeOutInputElement.addEventListener('change', selectTimeChangeHandler);
   roomsInputElement.addEventListener('change', selectRoomsChangeHandler);
   var checkInputValidityHandler = function () {
-    formInputsElement.forEach(function (input) {
+    formInputsElements.forEach(function (input) {
       if (!input.validity.valid) {
         input.style.border = '3px solid red';
       }

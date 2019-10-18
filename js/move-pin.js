@@ -20,23 +20,26 @@
 
       var coordsX = window.utils.mainPin.offsetLeft - shift.x;
       var coordsY = window.utils.mainPin.offsetTop - shift.y;
-      var coordsMinX =
-        window.const.MIN_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
-      var coordsMaxX =
-        window.const.MAX_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
-      var coordsMinY = -window.utils.pinImg.offsetWidth / 2;
-      var coordsMaxY =
-        window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
+      var coordsMinY = window.const.MIN_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
+      var coordsMaxY = window.const.MAX_LIMIT_X - window.const.MAIN_PIN_HEIGHT;
+      var coordsMinX = -window.utils.pinImg.offsetWidth / 2;
+      var coordsMaxX = window.utils.map.clientWidth - window.utils.pinImg.offsetWidth / 2;
 
-      coordsX = coordsX < coordsMinY ? coordsMinY : coordsX;
-      coordsX = coordsX > coordsMaxY ? coordsMaxY : coordsX;
+      if (coordsX < coordsMinX) {
+        coordsX = coordsMinX;
+      } else if (coordsX > coordsMaxX) {
+        coordsX = coordsMaxX;
+      }
 
-      coordsY = coordsY < coordsMinX ? coordsMinX : coordsY;
-      coordsY = coordsY > coordsMaxX ? coordsMaxX : coordsY;
+      if (coordsY < coordsMinY) {
+        coordsY = coordsMinY;
+      } else if (coordsY > coordsMaxY) {
+        coordsY = coordsMaxY;
+      }
 
       window.utils.mainPin.style.left = coordsX + 'px';
       window.utils.mainPin.style.top = coordsY + 'px';
-      window.utils.setAdressCoordinates();
+      window.utils.setAddressCoordinates();
     };
 
     var mouseUpHandler = function () {

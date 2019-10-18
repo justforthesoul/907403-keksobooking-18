@@ -8,17 +8,23 @@
   var addressElement = document.querySelector('#address');
   var filterElement = document.querySelector('.map__filters');
   var formElement = document.querySelector('.ad-form');
+  var pinRadius = window.const.MAIN_PIN_WIDTH / 2;
 
-  var setSratrAdressCoordinates = function () {
-    var pinCoordinates = (mainPinElement.offsetLeft + pinImgElement.offsetWidth / 2) + ', ' + (mainPinElement.offsetTop + pinImgElement.offsetHeight / 2);
+  var getXCoord = function () {
+    return (mainPinElement.offsetLeft + pinRadius);
+  };
+
+  var getYCoord = function (height) {
+    return (mainPinElement.offsetTop + height);
+  };
+
+  var setSratrAddressCoordinates = function () {
+    var pinCoordinates = getXCoord() + ', ' + getYCoord(pinRadius);
     addressElement.value = pinCoordinates;
   };
 
-  setSratrAdressCoordinates();
-
-
-  var setAdressCoordinates = function () {
-    var pinCoordinates = (mainPinElement.offsetLeft + window.const.MAIN_PIN_WIDTH / 2) + ', ' + (mainPinElement.offsetTop + window.const.MAIN_PIN_HEIGHT);
+  var setAddressCoordinates = function () {
+    var pinCoordinates = getXCoord() + ', ' + getYCoord(window.const.MAIN_PIN_HEIGHT);
     addressElement.value = pinCoordinates;
   };
 
@@ -29,8 +35,8 @@
     mainPin: mainPinElement,
     address: addressElement,
     filter: filterElement,
-    setAdressCoordinates: setAdressCoordinates,
-    setSratrAdressCoordinates: setSratrAdressCoordinates,
+    setAddressCoordinates: setAddressCoordinates,
+    setSratrAddressCoordinates: setSratrAddressCoordinates,
     formElement: formElement
   };
 })();
