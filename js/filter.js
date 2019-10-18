@@ -1,11 +1,6 @@
 'use strict';
 
 (function () {
-  var PriceRange = {
-    LOW: 'low',
-    MIDDLE: 'middle',
-    HIGH: 'high'
-  };
   var housingTypeElement = window.utils.filter.querySelector('#housing-type');
   var housingPriceElement = window.utils.filter.querySelector('#housing-price');
   var housingRoomsElement = window.utils.filter.querySelector('#housing-rooms');
@@ -36,17 +31,31 @@
     return housingTypeElement.value === 'any' ? data : housingTypeElement.value === String(data.offer.type);
   };
 
+  var getLowPrice = function (data) {
+    return data.offer.price <= window.const.MIN_PRICE;
+  };
+
+  var getMiddlePrice = function (data) {
+    return data.offer.price >= window.const.MIN_PRICE && data.offer.price <= window.const.MAX_PRICE;
+  };
+
+  var getHighPrice = function (data) {
+    return data.offer.price >= window.const.MAX_PRICE;
+  };
+
+  var getAllPrice = function (data) {
+    return data;
+  };
+
+  var priceRange = {
+    low: getLowPrice,
+    middle: getMiddlePrice,
+    high: getHighPrice,
+    any: getAllPrice
+  };
+
   var filterPrice = function (data) {
-    switch (housingPriceElement.value) {
-      case PriceRange.LOW:
-        return data.offer.price <= window.const.MIN_PRICE;
-      case PriceRange.MIDDLE:
-        return data.offer.price >= window.const.MIN_PRICE && data.offer.price <= window.const.MAX_PRICE;
-      case PriceRange.HIGH:
-        return data.offer.price >= window.const.MAX_PRICE;
-      default:
-        return data;
-    }
+    return priceRange[housingPriceElement.value](data);
   };
 
   var filterRooms = function (data) {
