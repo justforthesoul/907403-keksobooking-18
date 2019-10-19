@@ -27,6 +27,10 @@
     });
   };
 
+  var checkArrayValidity = function (data) {
+    return !data.offer ? false : data;
+  };
+
   var filterType = function (data) {
     return housingTypeElement.value === 'any' ? data : housingTypeElement.value === String(data.offer.type);
   };
@@ -91,7 +95,8 @@
 
   var getFilteringData = function (data) {
     return data.filter(function (it) {
-      return filterType(it) &&
+      return checkArrayValidity(it) &&
+             filterType(it) &&
              filterPrice(it) &&
              filterRooms(it) &&
              filterGuests(it) &&

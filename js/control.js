@@ -49,18 +49,8 @@
     window.utils.mainPin.addEventListener('mousedown', pinMousedownHandler);
   };
 
-  var checkArrayValidity = function (arr) {
-    var array = [];
-    arr.forEach(function (it) {
-      if (it.offer) {
-        array.push(it);
-      }
-    });
-    return array;
-  };
-
   var successHandler = function (adverts) {
-    window.adverts = checkArrayValidity(adverts);
+    window.adverts = adverts;
     window.map.renderPins(window.filter.getData(window.adverts));
     window.filter.unBlock();
   };

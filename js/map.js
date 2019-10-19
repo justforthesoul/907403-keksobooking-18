@@ -24,18 +24,15 @@
 
   var createPinElem = function (data) {
     var pinElement = pinTemplateElement.cloneNode(true);
-    if (data.offer) {
-      setPinCoordinates(pinElement, data);
-      setPinImgAttributes(pinElement, data);
-      pinElement.classList.add('map__pin');
-      pinElement.addEventListener('click', function () {
-        showCard(data, pinElement);
-        window.activePin = pinElement;
-        window.activePin.classList.add('map__pin--active');
-      });
-      return pinElement;
-    }
-    return true;
+    setPinCoordinates(pinElement, data);
+    setPinImgAttributes(pinElement, data);
+    pinElement.classList.add('map__pin');
+    pinElement.addEventListener('click', function () {
+      showCard(data, pinElement);
+      window.activePin = pinElement;
+      window.activePin.classList.add('map__pin--active');
+    });
+    return pinElement;
   };
 
   var checkOffer = function (offer) {
@@ -122,27 +119,28 @@
     setCardFeatures(cardElement, data);
     setCardPhotos(cardElement, data);
     cardElement.classList.add('map__card');
-
-    var buttonClickHandler = function (evt) {
-      evt.preventDefault();
-      cardElement.remove();
-      window.activePin.classList.remove('map__pin--active');
-      document.removeEventListener('click', buttonClickHandler);
-    };
-
-    var buttonKeydownHandler = function (evt) {
-      if (evt.keyCode === window.const.ESC_KEYCODE) {
-        evt.preventDefault();
-        window.activePin.classList.remove('map__pin--active');
-        cardElement.remove();
-        document.removeEventListener('keydown', buttonKeydownHandler);
-      }
-    };
-
-    cardElement.querySelector('.popup__close').addEventListener('click', buttonClickHandler);
-    document.addEventListener('keydown', buttonKeydownHandler);
+    cardElement.querySelector('.popup__close').addEventListener('click', function (evt) {
+      removeCardWithinClick(evt, cardElement);
+    });
+    document.addEventListener('keydown', function (evt) {
+      removeCardWithinEsc(evt, cardElement);
+    });
 
     return cardElement;
+  };
+
+  var removeCardWithinClick = function (evt, elem) {
+    evt.preventDefault();
+    elem.remove();
+    window.activePin.classList.remove('map__pin--active');
+  };
+
+  var removeCardWithinEsc = function (evt, elem) {
+    if (evt.keyCode === window.const.ESC_KEYCODE) {
+      evt.preventDefault();
+      window.activePin.classList.remove('map__pin--active');
+      elem.remove();
+    }
   };
 
   var mapPinsElement = window.utils.map.querySelector('.map__pins');
